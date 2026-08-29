@@ -1,32 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <MetaDataObject xmlns="http://v8.1c.ru/8.3/MDClasses" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:cmi="http://v8.1c.ru/8.2/managed-application/cmi" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:pal="http://v8.1c.ru/8.1/data/ui/colors/palette" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xen="http://v8.1c.ru/8.3/xcf/enums" xmlns:xpr="http://v8.1c.ru/8.3/xcf/predef" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.21">
-	<ExternalDataProcessor uuid="47a08815-f31e-4cac-a316-c9b061244212">
-		<InternalInfo>
-			<xr:ContainedObject>
-				<xr:ClassId>c3831ec8-d8d5-4f93-8a22-f9bfae07327f</xr:ClassId>
-				<xr:ObjectId>2e429e0c-828c-48d0-8d42-628577f5c3da</xr:ObjectId>
-			</xr:ContainedObject>
-			<xr:GeneratedType name="ExternalDataProcessorObject.Пятнашки" category="Object">
-				<xr:TypeId>5f60df04-e7fa-4d96-baf0-d4d2950f6d46</xr:TypeId>
-				<xr:ValueId>75af34c7-9e38-498d-ad91-f3b1647efe37</xr:ValueId>
-			</xr:GeneratedType>
-		</InternalInfo>
+	<Template uuid="5ca4aa9b-9cad-441d-8df6-bede6477f18f">
 		<Properties>
-			<Name>Пятнашки</Name>
+			<Name>РешательJavaScript</Name>
 			<Synonym>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Пятнашки</v8:content>
+					<v8:content>Решатель java script</v8:content>
 				</v8:item>
 			</Synonym>
 			<Comment/>
-			<DefaultForm>ExternalDataProcessor.Пятнашки.Form.Форма</DefaultForm>
-			<AuxiliaryForm/>
+			<TemplateType>TextDocument</TemplateType>
 		</Properties>
-		<ChildObjects>
-			<Form>Форма</Form>
-			<Template>Макет</Template>
-			<Template>РешательJavaScript</Template>
-		</ChildObjects>
-	</ExternalDataProcessor>
+	</Template>
 </MetaDataObject>

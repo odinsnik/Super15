@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Пятнашки — решатель (служебный)</title>
+</head>
+<body>
+    <script>
+        // ---------- Класс решателя (алгоритм IDA* с эвристикой Манхэттен + линейные конфликты) ----------
+        class FifteenSolver {
+            constructor() {
+                this.goal = Array.from({ length: 16 }, (_, i) => (i + 1) % 16);
+                this.nodesCount = 0;
+            }
+
+            isSolvable(board) {
+                let inversions = 0;
+                const flat = board.filter(v => v !== 0);
+                for (let i = 0; i < flat.length; i++) {
+                    for (let j = i + 1; j < flat.length; j++) {
+                        if (flat[i] > flat[j]) inversions++;
+                    }
+                }
+                const emptyRowFromBottom = 4 - Math.floor(board.indexOf(0) / 4);
+                return (emptyRowFromBottom % 2 === 1) ? (inversions % 2 === 0) : (inversions % 2 === 1);
+            }
+
+            heuristic(board) {
+                let distance = 0;
+                let conflict = 0;
+
+                for (let r = 0; r < 4; r++) {
+                    for (let c = 0; c < 4; c++) {
+                        const val = board[r * 4 + c];
+                        if (val === 0) continue;
+                        const tr = Math.floor((val - 1) / 4);
+                        const tc = (val - 1) % 4;
+                        distance += Math.abs(r - tr) + Math.abs(c - tc);
+                    }
+                }
+
+                for (let r = 0; r < 4; r++) {
+                    for (let c1 = 0; c1 < 4; c1++) {
+                        const v1 = board[r * 4 + c1];
+                        if (v1 === 0 || Math.floor((v1 - 1) / 4) !== r) continue;
+                        for (let c2 = c1 + 1; c2 < 4; c2++) {
+                            const v2 = board[r * 4 + c2];
+                            if (v2 === 0 || Math.floor((v2 - 1) / 4) !== r) continue;
+                            if (v1 > v2) conflict += 2;
+                        }
+                    }
+                }
+
+                for (let c = 0; c < 4; c++) {
+                    for (let r1 = 0; r1 < 4; r1++) {
+                        const v1 = board[r1 * 4 + c];
+                        if (v1 === 0 || (v1 - 1) % 4 !== c) continue;
+                        for (let r2 = r1 + 1; r2 < 4; r2++) {
+                            const v2 = board[r2 * 4 + c];
+                            if (v2 === 0 || (v2 - 1) % 4 !== c) continue;
+                            if (v1 > v2) conflict += 2;
+                        }
+                    }
+                }
+
+                return distance + conflict;
+            }
+
+            getMoves(board) {
+                const moves = [];
+                const emptyIdx = board.indexOf(0);
+                const r = Math.floor(emptyIdx / 4);
+                const c = emptyIdx % 4;
+                const dirs = [];
+                if (r > 0) dirs.push(-4);
+                if (r < 3) dirs.push(4);
+                if (c > 0) dirs.push(-1);
+                if (c < 3) dirs.push(1);
+
+                for (const d of dirs) {
+                    const newBoard = board.slice();
+                    [newBoard[emptyIdx], newBoard[emptyIdx + d]] = [newBoard[emptyIdx + d], newBoard[emptyIdx]];
+                    moves.push({ board: newBoard, move: d });
+                }
+                return moves;
+            }
+
+            solve(startBoard, onProgress = null) {
+                if (!this.isSolvable(startBoard)) return null;
+
+                this.nodesCount = 0;
+                let threshold = this.heuristic(startBoard);
+                const path = { boards: [startBoard], moves: [] };
+                const startTime = performance.now();
+
+                while (true) {
+                    const temp = this._search(path, 0, threshold, startTime, onProgress);
+                    if (temp === "FOUND") {
+                        return { pathlength: path.boards.length - 1, nodes: this.nodesCount, path: path.moves };
+                    }
+                    if (temp === Infinity) return null;
+                    threshold = temp;
+                    if (onProgress) {
+                        onProgress(threshold, this.nodesCount, (performance.now() - startTime) / 1000);
+                    }
+                }
+            }
+
+            _search(path, g, threshold, startTime, onProgress) {
+                this.nodesCount++;
+                const node = path.boards[path.boards.length - 1];
+                const f = g + this.heuristic(node);
+
+                if (f > threshold) return f;
+                if (this.arraysEqual(node, this.goal)) return "FOUND";
+
+                let min = Infinity;
+                for (const succ of this.getMoves(node)) {
+                    if (path.boards.some(p => this.arraysEqual(p, succ.board))) continue;
+                    path.boards.push(succ.board);
+                    path.moves.push(succ.move);
+                    const temp = this._search(path, g + 1, threshold, startTime, onProgress);
+                    if (temp === "FOUND") return "FOUND";
+                    if (temp < min) min = temp;
+                    path.boards.pop();
+                    path.moves.pop();
+                }
+                return min;
+            }
+
+            arraysEqual(a, b) {
+                if (a.length !== b.length) return false;
+                for (let i = 0; i < a.length; i++) {
+                    if (a[i] !== b[i]) return false;
+                }
+                return true;
+            }
+        }
+
+        // ---------- Web Worker (вынос вычислений) ----------
+        const workerCode = `
+            self.onmessage = function(e) {
+                const { type, board } = e.data;
+                if (type === 'start') {
+                    const solver = new FifteenSolver();
+                    const result = solver.solve(board, (threshold, nodes, elapsed) => {
+                        self.postMessage({ type: 'progress', threshold, nodes, elapsed });
+                    });
+                    self.postMessage({ type: 'done', result });
+                }
+            };
+            ${FifteenSolver.toString()}
+        `;
+
+        const blob = new Blob([workerCode], { type: 'application/javascript' });
+        const workerUrl = URL.createObjectURL(blob);
+
+        // ---------- Отправка данных в 1С ----------
+        function sendTo1C(data) {
+            const jsonString = JSON.stringify(data);
+            const event = new CustomEvent('click', {
+                bubbles: true,
+                detail: jsonString
+            });
+            document.dispatchEvent(event);
+        }
+
+        // ---------- Точка входа из 1С ----------
+        function StartWorkerTask(jsonFrom1C) {
+            try {
+                const board = JSON.parse(jsonFrom1C);
+                // Запускаем решение в отдельном потоке
+                const worker = new Worker(workerUrl);
+                let isFinished = false;
+
+                worker.onmessage = function(e) {
+                    const data = e.data;
+                    if (data.type === 'progress') {
+                        sendTo1C({
+                            type: 'progress',
+                            threshold: data.threshold,
+                            nodes: data.nodes,
+                            elapsed: +data.elapsed.toFixed(2)
+                        });
+                    } else if (data.type === 'done') {
+                        if (data.result === null) {
+                            sendTo1C({ type: 'error', message: 'Поле нерешаемо' });
+                        } else {
+                            sendTo1C({
+                                type: 'done',
+                                pathlength: data.result.pathlength,
+                                nodes: data.result.nodes,
+                                path: data.result.path
+                            });
+                        }
+                        worker.terminate();
+                        isFinished = true;
+                    }
+                };
+
+                worker.onerror = function(error) {
+                    sendTo1C({ type: 'error', message: error.message });
+                    worker.terminate();
+                    isFinished = true;
+                };
+
+                worker.postMessage({ type: 'start', board: board });
+
+                // Возвращаем сразу, результат придёт позже через события
+                return "Solver started.";
+            } catch (e) {
+                sendTo1C({ type: 'error', message: 'Ошибка парсинга JSON: ' + e.message });
+                return "Ошибка: " + e.message;
+            }
+        }
+
+        // Функция для отмены (если потребуется извне) – оставляем на случай, если 1С захочет прервать
+        // Но по условию "не вызываемые функции убери" – убираем, так как не используется.
+        // Оставляем только StartWorkerTask.
+    </script>
+</body>
+</html>

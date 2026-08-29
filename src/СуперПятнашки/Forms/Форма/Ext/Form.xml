@@ -24,8 +24,13 @@
 			</Button>
 			<Button name="ФормаТестОценки" id="249">
 				<Type>CommandBarButton</Type>
-				<CommandName>Form.Command.ТестОценки</CommandName>
+				<CommandName>Form.Command.РешитьГоловоломку</CommandName>
 				<ExtendedTooltip name="ФормаТестОценкиРасширеннаяПодсказка" id="250"/>
+			</Button>
+			<Button name="ФормаТестОценкиJS" id="307">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.РешитьГоловоломкуJS</CommandName>
+				<ExtendedTooltip name="ФормаТестОценкиJSРасширеннаяПодсказка" id="308"/>
 			</Button>
 			<Button name="ФормаСправка" id="127">
 				<Type>CommandBarButton</Type>
@@ -181,10 +186,97 @@
 								</InputField>
 							</ChildItems>
 						</UsualGroup>
+						<LabelField name="СтатусОбработкиJavaJavaScript" id="322">
+							<DataPath>СтатусОбработкиJavaJavaScript</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Статус</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="СтатусОбработкиJavaJavaScriptКонтекстноеМеню" id="323"/>
+							<ExtendedTooltip name="СтатусОбработкиJavaJavaScriptРасширеннаяПодсказка" id="324"/>
+						</LabelField>
+						<LabelField name="ПрогрессОбработкиJavaJavaScript" id="318">
+							<DataPath>ПрогрессОбработкиJavaJavaScript</DataPath>
+							<Title>
+								<v8:item>
+									<v8:lang>ru</v8:lang>
+									<v8:content>Прогресс</v8:content>
+								</v8:item>
+							</Title>
+							<ContextMenu name="ПрогрессОбработкиJavaJavaScriptКонтекстноеМеню" id="319"/>
+							<ExtendedTooltip name="ПрогрессОбработкиJavaJavaScriptРасширеннаяПодсказка" id="320"/>
+						</LabelField>
+						<Table name="ТекущийПуть" id="274">
+							<Representation>List</Representation>
+							<ChangeRowSet>false</ChangeRowSet>
+							<ChangeRowOrder>false</ChangeRowOrder>
+							<AutoInsertNewRow>true</AutoInsertNewRow>
+							<EnableStartDrag>true</EnableStartDrag>
+							<EnableDrag>true</EnableDrag>
+							<DataPath>ТекущийПуть</DataPath>
+							<ShowCommandBar>auto</ShowCommandBar>
+							<RowFilter xsi:nil="true"/>
+							<ContextMenu name="ТекущийПутьКонтекстноеМеню" id="275"/>
+							<AutoCommandBar name="ТекущийПутьКоманднаяПанель" id="276">
+								<ChildItems>
+									<Button name="ТекущийПутьСобратьПошагово" id="326">
+										<Type>CommandBarButton</Type>
+										<CommandName>Form.Command.СобратьПошагово</CommandName>
+										<ExtendedTooltip name="ТекущийПутьСобратьПошаговоРасширеннаяПодсказка" id="327"/>
+									</Button>
+								</ChildItems>
+							</AutoCommandBar>
+							<ExtendedTooltip name="ТекущийПутьРасширеннаяПодсказка" id="277"/>
+							<SearchStringAddition name="ТекущийПутьСтрокаПоиска" id="278">
+								<AdditionSource>
+									<Item>ТекущийПуть</Item>
+									<Type>SearchStringRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="ТекущийПутьСтрокаПоискаКонтекстноеМеню" id="279"/>
+								<ExtendedTooltip name="ТекущийПутьСтрокаПоискаРасширеннаяПодсказка" id="280"/>
+							</SearchStringAddition>
+							<ViewStatusAddition name="ТекущийПутьСостояниеПросмотра" id="281">
+								<AdditionSource>
+									<Item>ТекущийПуть</Item>
+									<Type>ViewStatusRepresentation</Type>
+								</AdditionSource>
+								<ContextMenu name="ТекущийПутьСостояниеПросмотраКонтекстноеМеню" id="282"/>
+								<ExtendedTooltip name="ТекущийПутьСостояниеПросмотраРасширеннаяПодсказка" id="283"/>
+							</ViewStatusAddition>
+							<SearchControlAddition name="ТекущийПутьУправлениеПоиском" id="284">
+								<AdditionSource>
+									<Item>ТекущийПуть</Item>
+									<Type>SearchControl</Type>
+								</AdditionSource>
+								<ContextMenu name="ТекущийПутьУправлениеПоискомКонтекстноеМеню" id="285"/>
+								<ExtendedTooltip name="ТекущийПутьУправлениеПоискомРасширеннаяПодсказка" id="286"/>
+							</SearchControlAddition>
+							<ChildItems>
+								<InputField name="ТекущийПутьХод" id="295">
+									<DataPath>ТекущийПуть.Ход</DataPath>
+									<EditMode>EnterOnInput</EditMode>
+									<AutoEditMode>true</AutoEditMode>
+									<ExtendedEditMultipleValues>true</ExtendedEditMultipleValues>
+									<ContextMenu name="ТекущийПутьХодКонтекстноеМеню" id="296"/>
+									<ExtendedTooltip name="ТекущийПутьХодРасширеннаяПодсказка" id="297"/>
+								</InputField>
+							</ChildItems>
+						</Table>
 					</ChildItems>
 				</UsualGroup>
 			</ChildItems>
 		</UsualGroup>
+		<HTMLDocumentField name="РешательJavaScript" id="303">
+			<DataPath>РешательJavaScript</DataPath>
+			<Width>1</Width>
+			<Height>1</Height>
+			<HorizontalStretch>false</HorizontalStretch>
+			<VerticalStretch>false</VerticalStretch>
+			<ContextMenu name="РешательJavaScriptКонтекстноеМеню" id="304"/>
+			<ExtendedTooltip name="РешательJavaScriptРасширеннаяПодсказка" id="305"/>
+		</HTMLDocumentField>
 		<LabelDecoration name="Декорация1" id="216">
 			<Font ref="style:NormalTextFont" faceName="Arial" height="8" bold="true" italic="true" underline="false" strikeout="false" kind="StyleItem" scale="100"/>
 			<Title formatted="false">
@@ -310,6 +402,80 @@
 				</v8:NumberQualifiers>
 			</Type>
 		</Attribute>
+		<Attribute name="ТекущийПуть" id="2">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Текущий путь</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Ход" id="1">
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Ход</v8:content>
+						</v8:item>
+					</Title>
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Any</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="РешательJavaScript" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Решатель java script</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ПрогрессОбработкиJavaJavaScript" id="5">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Прогресс обработки java java script</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="СтатусОбработкиJavaJavaScript" id="7">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Статус обработки java java script</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
 	</Attributes>
 	<Commands>
 		<Command name="КомандаСтарт" id="7">
@@ -352,11 +518,26 @@
 			<Action>КомандаПеремешать</Action>
 			<Representation>TextPicture</Representation>
 		</Command>
-		<Command name="ТестОценки" id="2">
+		<Command name="РешитьГоловоломку" id="2">
 			<Title>
 				<v8:item>
 					<v8:lang>ru</v8:lang>
-					<v8:content>Тест оценки</v8:content>
+					<v8:content>Решить головоломку</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Решить головоломку</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>РешитьГоловоломку</Action>
+		</Command>
+		<Command name="РешитьГоловоломкуJS" id="3">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Решить головоломку JS</v8:content>
 				</v8:item>
 			</Title>
 			<ToolTip>
@@ -365,7 +546,22 @@
 					<v8:content>Тест оценки</v8:content>
 				</v8:item>
 			</ToolTip>
-			<Action>ТестОценки</Action>
+			<Action>РешитьГоловоломкуJS</Action>
+		</Command>
+		<Command name="СобратьПошагово" id="4">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Собрать пошагово</v8:content>
+				</v8:item>
+			</Title>
+			<ToolTip>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Собрать пошагово</v8:content>
+				</v8:item>
+			</ToolTip>
+			<Action>СобратьПошагово</Action>
 		</Command>
 	</Commands>
 </Form>
